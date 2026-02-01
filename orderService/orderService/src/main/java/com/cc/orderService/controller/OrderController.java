@@ -1,6 +1,7 @@
 package com.cc.orderService.controller;
 
 import com.cc.orderService.Client.ProductClient;
+import com.cc.orderService.Dto.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -67,17 +68,23 @@ public ResponseEntity<String> getOrderDetails(@PathVariable("id") Long orderId) 
 }
 @GetMapping("/feign/{id}")
 public ResponseEntity<String> getOrderDetailsFeign(@PathVariable("id") Long orderId){
-    String responseObj = productClient.getProductDetails(orderId.toString());
-    System.out.println("Response from product service using feign client: " + responseObj);
-    return ResponseEntity.ok("Order details for order id: " + orderId);
+    try {
+        String responseObj = productClient.getProductDetails(orderId.toString());
+        System.out.println("Response from product service using feign client: " + responseObj);
+        return ResponseEntity.ok("Order details for order id: " + orderId);
+    } catch (Exception e) {
+        System.err.println("Feign client error after retries exhausted: " + e.getMessage());
+        e.printStackTrace();
+        return ResponseEntity.status(503).body("Service unavailable - Retries exhausted: " + e.getMessage());
+    }
 }
 @PutMapping(value = "/feign/update/{id}",consumes = "application/json")
 public ResponseEntity<String> updateProductFeign(@PathVariable("id") Long productId,
                                                  @RequestBody String productDetails,
                                                  @RequestParam("sendMail") boolean sendMail,
                                                  @RequestHeader("X-ConceptCod-ID") String authToken){
-    ResponseEntity<String> response = productClient.updateProduct(productId.toString(), productDetails, sendMail, authToken);
-    System.out.println("Response from product service using feign client for update: " + response.getBody());
+    Product response = productClient.updateProduct(productId.toString(), productDetails, sendMail, authToken);
+
     return ResponseEntity.ok("Order details for order id: " + productId);
 }
 

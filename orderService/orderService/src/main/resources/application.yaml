@@ -4,6 +4,15 @@ feign:
   client:
     product-service:
       url: "http://localhost:8082"
+      connect-timeout: 5000
+      read-timeout: 5000
 spring:
   application:
     name: orderService
+
+logging:
+  level:
+    com.cc.orderService: DEBUG
+    feign: DEBUG
+    org.springframework.cloud.openfeign: DEBUG
+
