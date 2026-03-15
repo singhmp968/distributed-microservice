@@ -16,3 +16,10 @@ logging:
     feign: DEBUG
     org.springframework.cloud.openfeign: DEBUG
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+

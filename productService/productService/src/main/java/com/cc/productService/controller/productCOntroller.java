@@ -1,5 +1,6 @@
 package com.cc.productService.controller;
 
+import com.cc.productService.entity.Product;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,11 +16,15 @@ public class productCOntroller {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateProduct(@PathVariable("id") String id,
-                                                @RequestBody String productDetails,
-                                                @RequestParam("sendMail") boolean sendMail,
-                                                @RequestHeader("X-ConceptCod-ID") String authToken
+    public ResponseEntity<Product> updateProduct(@PathVariable("id") String id,
+                                                 @RequestBody String productDetails,
+                                                 @RequestParam("sendMail") boolean sendMail,
+                                                 @RequestHeader("X-ConceptCod-ID") String authToken
                                                 ) {
-        return ResponseEntity.ok("Product updated successfully");
+//        return ResponseEntity.ok("Product updated successfully");
+//        return ResponseEntity.status(400).body(null);
+
+        System.out.println("🔥 Product service called for id: " + id);
+        throw new RuntimeException("Simulated failure for retry demo");
     }
 }

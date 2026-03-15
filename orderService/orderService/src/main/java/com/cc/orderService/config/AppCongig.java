@@ -14,10 +14,11 @@ public class AppCongig {
     public RestClient restClientInstance(){
         return RestClient.create();    }
 
-//    @Bean(name = "simpleRestTemplate")
-//    public RestTemplate restTemplate() {
-//        return new RestTemplate();
-//    }
+
+    @Bean(name = "simpleRestTemplate")
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 //
 //
 //
