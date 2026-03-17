@@ -33,21 +33,38 @@ public class OrderController {
 @Autowired
 DiscoveryClient discoveryClient;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<String> getOrderDetailsServiceDiscovery(@PathVariable("id") Long orderId) {
-//        discoveryClient.getInstances("product-service").forEach(serviceInstance -> {
-//            System.out.println("Service instance found: " + serviceInstance.getUri());
-//        });
+    @GetMapping("/feign/{id}")
+    public ResponseEntity<String> getOrderDetailsFeign(@PathVariable("id") Long orderId){
+        try {
 
-        List<ServiceInstance> instance = discoveryClient.getInstances("product-service");
-        URI productServiceUri = instance.get(0).getUri();
-        String responseObj = restTemplate.getForObject(productServiceUri + "/products/" + orderId, String.class);
-        System.out.println("Response from product service: " + responseObj);
+//                discoveryClient.getInstances("product-service").forEach(serviceInstance -> {
+//                    System.out.println("Service instance found: " + serviceInstance.getUri());
+            String responseObj = productClient.getProductDetails(orderId.toString());
+            System.out.println("Response from product service using feign client: " + responseObj);
+            return ResponseEntity.ok("Order details for order id: " + orderId);
 
-       // String responseObj = restTemplate.getForObject("http://product-service/products/" + orderId, String.class);
-   return ResponseEntity.ok("Order details for order id: " + orderId);
-
+        } catch (Exception e) {
+            System.err.println("Feign client error after retries exhausted: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(503).body("Service unavailable - Retries exhausted: " + e.getMessage());
+        }
     }
+
+//    @GetMapping("/{id}")
+//    public ResponseEntity<String> getOrderDetailsServiceDiscovery(@PathVariable("id") Long orderId) {
+////        discoveryClient.getInstances("product-service").forEach(serviceInstance -> {
+////            System.out.println("Service instance found: " + serviceInstance.getUri());
+////        });
+//
+//        List<ServiceInstance> instance = discoveryClient.getInstances("product-service");
+//        URI productServiceUri = instance.get(0).getUri();
+//        String responseObj = restTemplate.getForObject(productServiceUri + "/products/" + orderId, String.class);
+//        System.out.println("Response from product service: " + responseObj);
+//
+//       // String responseObj = restTemplate.getForObject("http://product-service/products/" + orderId, String.class);
+//   return ResponseEntity.ok("Order details for order id: " + orderId);
+//
+//    }
 
 
 
@@ -94,6 +111,7 @@ DiscoveryClient discoveryClient;
 //        System.out.println("Response from product service: " + responseObj);
 //        return ResponseEntity.ok("Order details for order id: " + orderId);
 //}
+
 //@GetMapping("/feign/{id}")
 //public ResponseEntity<String> getOrderDetailsFeign(@PathVariable("id") Long orderId){
 //    try {
