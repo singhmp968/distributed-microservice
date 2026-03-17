@@ -4,6 +4,7 @@ import com.cc.orderService.Client.ProductClient;
 import com.cc.orderService.Dto.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,8 @@ public class OrderController {
     @Autowired
     ProductClient productClient;
 
+    @Value("${product.service.baseUrl}")
+    String productBaseUrl;
 @Autowired
 DiscoveryClient discoveryClient;
 
@@ -66,6 +69,18 @@ DiscoveryClient discoveryClient;
 //
 //    }
 
+    // Lec_5example of CLient side load balancer
+
+@GetMapping("/{id}")
+public ResponseEntity<String> getOrderDetailsServiceDiscovery(@PathVariable("id") Long orderId) {
+
+    String responseObj = restTemplate.getForObject(productBaseUrl + "/products/" + orderId, String.class);
+    System.out.println("Response from product service: " + responseObj);
+
+    // String responseObj = restTemplate.getForObject("http://product-service/products/" + orderId, String.class);
+    return ResponseEntity.ok("Order details for order id: " + orderId);
+
+}
 
 
 //    @GetMapping("/{id}")
