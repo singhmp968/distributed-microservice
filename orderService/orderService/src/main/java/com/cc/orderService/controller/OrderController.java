@@ -96,6 +96,14 @@ if("RATE_LIMITED".equals(retult)){
     return ResponseEntity.ok(retult);
 }
 
+    @GetMapping("/bulkhead/{id}")
+public ResponseEntity<String> bulkHeadFallBack(@PathVariable String id) {
+        String retult = orderService.invalkeBulkHeadPatterFromOrderTOProduct(id);
+        if("BULKHEAD_FALLING".equals(retult)){
+            return  ResponseEntity.status(429).body("bulk head patter from order id: " + id);
+        }
+        return  ResponseEntity.ok(retult);
+}
 
 //    @GetMapping("/{id}")
 //    public ResponseEntity<String> getOrderDetails(@PathVariable("id") Long orderId) {

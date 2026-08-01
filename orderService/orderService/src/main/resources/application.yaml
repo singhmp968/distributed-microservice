@@ -37,3 +37,8 @@ resilience4j:
         limit-for-period: 5
         limit-refresh-period: 1s
         timeout-duration: 0
+  bulkhead:
+    instances:
+      productBulkHead:
+        maxConcurrentCalls: 2
+        maxWaitDuration: 0
