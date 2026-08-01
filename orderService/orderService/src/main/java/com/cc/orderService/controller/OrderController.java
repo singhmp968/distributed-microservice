@@ -2,6 +2,8 @@ package com.cc.orderService.controller;
 
 import com.cc.orderService.Client.ProductClient;
 import com.cc.orderService.Dto.Product;
+import com.cc.orderService.service.OrderService;
+import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +33,8 @@ public class OrderController {
     @Autowired
     ProductClient productClient;
 
+    @Autowired
+    OrderService orderService;
     @Value("${product.service.baseUrl}")
     String productBaseUrl;
 @Autowired
@@ -71,15 +75,25 @@ DiscoveryClient discoveryClient;
 
     // Lec_5example of CLient side load balancer
 
-@GetMapping("/{id}")
-public ResponseEntity<String> getOrderDetailsServiceDiscovery(@PathVariable("id") Long orderId) {
+//@GetMapping("/{id}")
+//public ResponseEntity<String> getOrderDetailsServiceDiscovery(@PathVariable("id") Long orderId) {
+//
+//    String responseObj = restTemplate.getForObject(productBaseUrl + "/products/" + orderId, String.class);
+//    System.out.println("Response from product service: " + responseObj);
+//
+//    // String responseObj = restTemplate.getForObject("http://product-service/products/" + orderId, String.class);
+//    return ResponseEntity.ok("Order details for order id: " + orderId);
+//
+//}
 
-    String responseObj = restTemplate.getForObject(productBaseUrl + "/products/" + orderId, String.class);
-    System.out.println("Response from product service: " + responseObj);
 
-    // String responseObj = restTemplate.getForObject("http://product-service/products/" + orderId, String.class);
-    return ResponseEntity.ok("Order details for order id: " + orderId);
-
+    @GetMapping("/{id}")
+public ResponseEntity<String> callProductApi(@PathVariable String id) {
+        String retult = orderService.invokeProductApi(id);
+if("RATE_LIMITED".equals(retult)){
+    return ResponseEntity.status(429).body("Rate Limited for order id: " + id);
+}
+    return ResponseEntity.ok(retult);
 }
 
 

@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 
 
 
-@Configuration
+//@Configuration
 public class ProductClientConfig {
 //    @Bean
 //    public Retryer defaultRetryer() {
@@ -25,23 +25,23 @@ public class ProductClientConfig {
 //        return new Retryer.Default(100, 1000, 3);
 //    }
 
-    @Bean
-    public Retryer MyCustomRetryerFullCtrl() {
-        return new MyCustomRetryerFull();
-    }
-
-    @Bean
-    public Encoder myCustomEncoder() {
-        return new MyCustomProductClientEncoder();
-    }
-    @Bean
-    public Decoder myCustomDecoder() {
-        return new MyCustomProductClientDecoder();
-    }
-    @Bean
-    public ErrorDecoder errorDecoder() {
-        return new myCustomErrorDecoder();
-    }
+//    @Bean
+//    public Retryer MyCustomRetryerFullCtrl() {
+//        return new MyCustomRetryerFull();
+//    }
+//
+//    @Bean
+//    public Encoder myCustomEncoder() {
+//        return new MyCustomProductClientEncoder();
+//    }
+//    @Bean
+//    public Decoder myCustomDecoder() {
+//        return new MyCustomProductClientDecoder();
+//    }
+//    @Bean
+//    public ErrorDecoder errorDecoder() {
+//        return new myCustomErrorDecoder();
+//    }
 
 
 }
