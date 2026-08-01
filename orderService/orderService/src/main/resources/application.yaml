@@ -42,3 +42,10 @@ resilience4j:
       productBulkHead:
         maxConcurrentCalls: 2
         maxWaitDuration: 0
+  thread-pool-bulkhead:
+    instances:
+      puoductThreadPoolBulkHead:
+        core-thread-pool-size: 1      # threads kept alive normally
+        max-thread-pool-size: 2       # max threads it can grow to
+        queue-capacity: 1             # requests allowed to wait when all threads busy
+        keep-alive-duration: 20ms     # idle time before extra (above core) threads die

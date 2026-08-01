@@ -105,6 +105,15 @@ public ResponseEntity<String> bulkHeadFallBack(@PathVariable String id) {
         return  ResponseEntity.ok(retult);
 }
 
+
+    @GetMapping("/bulkhead/threadPool/{id}")
+    public ResponseEntity<String> bulkHeadThreadPoolTestk(@PathVariable("id") String id) {
+        String retult = orderService.invvokeNulkHeadThreadPool(id).join();
+        if("BULKHEAD_FALLING".equals(retult)){
+            return  ResponseEntity.status(429).body("bulk head patter from order id: " + id);
+        }
+        return  ResponseEntity.ok(retult);
+    }
 //    @GetMapping("/{id}")
 //    public ResponseEntity<String> getOrderDetails(@PathVariable("id") Long orderId) {
 //
