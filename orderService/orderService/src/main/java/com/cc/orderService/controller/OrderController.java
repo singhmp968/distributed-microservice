@@ -128,6 +128,19 @@ public ResponseEntity<String> bulkHeadFallBack(@PathVariable String id) {
         return  ResponseEntity.ok(retult);
     }
 
+    // Circute bearker
+    @GetMapping("/circuitbreaker/{id}")
+    public ResponseEntity<String> circuitBreaker(@PathVariable("id") String id) {
+        String retult = orderService.invokeProductWithCircuitBreaker(id);
+
+        if("CIRCUIT_OPEN".equals(retult))
+        {
+            return  ResponseEntity.status(429).body("circuit breaker from order id: " + id);
+        }
+        return  ResponseEntity.ok(retult);
+    }
+
+
 //    @GetMapping("/{id}")
 //    public ResponseEntity<String> getOrderDetails(@PathVariable("id") Long orderId) {
 //

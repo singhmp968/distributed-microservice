@@ -2,6 +2,7 @@ package com.cc.orderService.service;
 
 import com.cc.orderService.Client.ProductClient;
 import io.github.resilience4j.bulkhead.annotation.Bulkhead;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,4 +81,21 @@ public class OrderService {
         System.out.println("Bulkhead Falling Back");
         return "RETRY_EXHAUSTED";
     }
+
+
+    // circutebreaker
+    @CircuitBreaker(name = "productCircuitBreaker",fallbackMethod = "circuitBreakerFallback")
+        public String invokeProductWithCircuitBreaker(String id)
+    {
+        String response = productClient.getProductDetails(id);
+        System.out.println("Response is " + response);
+        return response;
+    }
+
+    public String circuitBreakerFallback(String id, Throwable t)
+    {
+        System.out.println("CB fallback due to: " + t.getClass().getSimpleName());
+        return "CIRCUIT_OPEN";
+    }
+
 }
