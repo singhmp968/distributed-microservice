@@ -49,3 +49,8 @@ resilience4j:
         max-thread-pool-size: 2       # max threads it can grow to
         queue-capacity: 1             # requests allowed to wait when all threads busy
         keep-alive-duration: 20ms     # idle time before extra (above core) threads die
+  retry:
+    instances:
+      productRetry:
+        max-attempts: 3
+        wait-duration: 1s

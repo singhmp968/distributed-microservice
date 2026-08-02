@@ -11,9 +11,13 @@ public class productCOntroller {
     public String getProductDetails() throws InterruptedException {
 
 //        Thread.sleep(15_000); // 15 seconds
-        Thread.sleep(2000); // 15 seconds
+//        Thread.sleep(2000); // 15 seconds
+//
+//        return "Product details from product service";
 
-        return "Product details from product service";
+
+        System.out.println("🔥 Product HIT at " + java.time.LocalTime.now());
+        throw new RuntimeException("Simulated transient failure");
     }
 
     @PutMapping("/update/{id}")

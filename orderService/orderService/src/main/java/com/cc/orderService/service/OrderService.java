@@ -3,6 +3,7 @@ package com.cc.orderService.service;
 import com.cc.orderService.Client.ProductClient;
 import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -61,5 +62,22 @@ public class OrderService {
     public CompletableFuture<String> bulkHeadThreadPoolFallBack(String id, Throwable t) {
         return CompletableFuture.completedFuture(
                 "FALLBACK_REASON: " + t.getClass().getName() + " - " + t.getMessage());
+    }
+
+
+    // product Retry
+    @Retry(name = "productRetry",fallbackMethod = "productServiceFallBack")
+    public String invokeProductWithRetry(String id)
+    {
+
+        String response = productClient.getProductDetails(id);
+        System.out.println("Response is " + response);
+        return response;
+    }
+
+    private  String productServiceFallBack(String id, Throwable t)
+    {
+        System.out.println("Bulkhead Falling Back");
+        return "RETRY_EXHAUSTED";
     }
 }

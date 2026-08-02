@@ -114,6 +114,20 @@ public ResponseEntity<String> bulkHeadFallBack(@PathVariable String id) {
         }
         return  ResponseEntity.ok(retult);
     }
+
+    // retry pattern
+
+    @GetMapping("/retry/order/{id}")
+    public ResponseEntity<String> retryOrder(@PathVariable("id") String id) {
+
+        String retult = orderService.invokeProductWithRetry(id);
+        if("RETRY_EXHAUSTED".equals(retult)){
+            return  ResponseEntity.status(429).body("bulk head patter from order id: " + id);
+
+        }
+        return  ResponseEntity.ok(retult);
+    }
+
 //    @GetMapping("/{id}")
 //    public ResponseEntity<String> getOrderDetails(@PathVariable("id") Long orderId) {
 //
