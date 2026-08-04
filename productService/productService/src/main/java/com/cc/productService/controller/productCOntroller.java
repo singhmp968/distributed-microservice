@@ -16,8 +16,9 @@ public class productCOntroller {
 //        return "Product details from product service";
 
 
-        System.out.println("🔥 Product HIT at " + java.time.LocalTime.now());
-        throw new RuntimeException("Simulated transient failure");
+//        System.out.println("🔥 Product HIT at " + java.time.LocalTime.now());
+//        throw new RuntimeException("Simulated transient failure");
+        return "hurryyyyy";
     }
 
     @PutMapping("/update/{id}")
