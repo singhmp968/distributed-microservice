@@ -9,12 +9,22 @@ feign:
 spring:
   application:
     name: orderService
+  config:
+    import: "optional:configserver:http://localhost:8888"
+  profiles:
+    active: dev
 
 logging:
   level:
     com.cc.orderService: DEBUG
     feign: DEBUG
     org.springframework.cloud.openfeign: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health
 
 eureka:
   client:

@@ -1,0 +1,19 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: ConfigManagement
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/singhmp968/my-config-repo.git
+          search-paths: global, {application}
+          clone-on-start: true
+          default-label: main
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health

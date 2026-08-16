@@ -2,6 +2,7 @@ package com.cc.orderService.controller;
 
 import com.cc.orderService.Client.ProductClient;
 import com.cc.orderService.Dto.Product;
+import com.cc.orderService.properties.OrderProperities;
 import com.cc.orderService.service.OrderService;
 import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StreamUtils;
@@ -19,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+
 
 
 @RestController
@@ -37,8 +40,26 @@ public class OrderController {
     OrderService orderService;
     @Value("${product.service.baseUrl}")
     String productBaseUrl;
+    @Value("${custom.message:custom.message NOT set}")
+    private String message;
 @Autowired
 DiscoveryClient discoveryClient;
+private int counter =0;
+
+    @Autowired
+    OrderProperities orderProperities;
+
+
+//    @GetMapping("/fetch")
+//    public String getOrders(){
+//        return "fetch from order andf messge" + message +" " + counter;
+//    }
+
+    @GetMapping("/fetch")
+    public String getOrders(){
+        return "fetch from order andf messge" + orderProperities.getMessage() +" " + counter;
+    }
+
 
     @GetMapping("/feign/{id}")
     public ResponseEntity<String> getOrderDetailsFeign(@PathVariable("id") Long orderId){

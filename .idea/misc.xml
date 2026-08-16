@@ -8,6 +8,7 @@
         <option value="$PROJECT_DIR$/productService/productService/pom.xml" />
         <option value="$PROJECT_DIR$/EurekaServer/pom.xml" />
         <option value="$PROJECT_DIR$/apigateway/pom.xml" />
+        <option value="$PROJECT_DIR$/ConfigManagement/pom.xml" />
       </list>
     </option>
   </component>

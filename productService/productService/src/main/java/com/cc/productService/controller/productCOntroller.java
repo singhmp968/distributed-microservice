@@ -7,8 +7,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/products")
 public class productCOntroller {
+    int counter=0;
     @GetMapping("/{id}")
-    public String getProductDetails(@RequestHeader(value="X-Correlation-Id", required=false) String cid) throws InterruptedException {
+    public String getProductDetails(@RequestHeader(value="X-Correlation-Id", required=false) String cid,
+                                    @RequestHeader(value="X-test-RequestHeader", required=false) String testHeader
+                                    ) throws InterruptedException {
 
 //        Thread.sleep(15_000); // 15 seconds
 //        Thread.sleep(2000); // 15 seconds
@@ -18,9 +21,20 @@ public class productCOntroller {
 
 //        System.out.println("🔥 Product HIT at " + java.time.LocalTime.now());
 //        throw new RuntimeException("Simulated transient failure");
+        System.out.println("testHeader:  " + testHeader);
 
-        System.out.println("productService correlationId = " + cid);
-        return "hurryyyyy";
+//        System.out.println("productService correlationId = " + cid);
+//        return "hurryyyyy";
+
+        // retyr check
+        counter++;
+        if(counter<=3)
+        {
+        throw new RuntimeException("Simulated transient failure");
+
+        }
+        return "success in 4th attempt";
+
     }
 
     @PutMapping("/update/{id}")

@@ -12,6 +12,42 @@ spring:
           uri: lb://product-service
           predicates:
             - Path=/products/**
+#        filters
+          filters:
+          - name: AddRequestHeader
+            args:
+              name: X-test-RequestHeader
+              value: ApiGatewayRequest
+          - name: AddResponseHeader
+            args:
+              name: X-test-ResponseHeader
+              value: ApiGatewayResponse
+          - name: RemoveRequestHeader
+            args:
+              name: Api-private-key
+#              Retry
+          - name: Retry
+            args:
+              retries: 4
+              methods: GET,DELETE
+#Circuit
+          - name: CircuitBreaker
+            args:
+              name: myCircuitBreakerName
+              fallbackUri: forward:/fallback
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      myCircuitBreakerName:
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 5
+        minimum-number-of-calls: 5
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+
 eureka:
   client:
     service-url:

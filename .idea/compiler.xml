@@ -10,11 +10,13 @@
         <module name="apigateway" />
         <module name="orderService" />
         <module name="productService" />
+        <module name="ConfigManagement" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="ConfigManagement" options="-parameters" />
       <module name="EurekaServer" options="-parameters" />
       <module name="apigateway" options="-parameters" />
       <module name="orderService" options="-parameters" />
