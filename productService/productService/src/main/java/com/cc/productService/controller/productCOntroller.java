@@ -8,6 +8,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/products")
 public class productCOntroller {
     int counter=0;
+
+
+//    @Autowired
+//    ProductProperities productProperities;
+//
+//    @GetMapping("/config-message")
+//    public String configMessage() {
+//        return "product-service: " + productProperities.getMessage();
+//    }
+
+
     @GetMapping("/{id}")
     public String getProductDetails(@RequestHeader(value="X-Correlation-Id", required=false) String cid,
                                     @RequestHeader(value="X-test-RequestHeader", required=false) String testHeader

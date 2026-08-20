@@ -13,6 +13,11 @@ spring:
     import: "optional:configserver:http://localhost:8888"
   profiles:
     active: dev
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
 
 logging:
   level:
@@ -24,7 +29,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh, health
+        include: refresh, health, busrefresh
 
 eureka:
   client:

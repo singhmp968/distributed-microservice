@@ -2,6 +2,7 @@ package com.cc.orderService.controller;
 
 import com.cc.orderService.Client.ProductClient;
 import com.cc.orderService.Dto.Product;
+import com.cc.orderService.bus.OrderMessageEvent;
 import com.cc.orderService.properties.OrderProperities;
 import com.cc.orderService.service.OrderService;
 import com.netflix.discovery.converters.Auto;
@@ -49,11 +50,23 @@ private int counter =0;
     @Autowired
     OrderProperities orderProperities;
 
+    @Autowired
+    private org.springframework.context.ApplicationEventPublisher publisher;
+    @Autowired
+    private org.springframework.cloud.bus.BusProperties busProperties;
+
 
 //    @GetMapping("/fetch")
 //    public String getOrders(){
 //        return "fetch from order andf messge" + message +" " + counter;
 //    }
+
+
+    @GetMapping("/send-to-product")
+    public String sendToProduct(@RequestParam String msg) {
+        publisher.publishEvent(new OrderMessageEvent(this, busProperties.getId(), msg));
+        return "published to bus: " + msg;
+    }
 
     @GetMapping("/fetch")
     public String getOrders(){
