@@ -12,8 +12,14 @@ spring:
           search-paths: global, {application}
           clone-on-start: true
           default-label: main
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
 management:
   endpoints:
     web:
       exposure:
-        include: refresh, health
+        include: refresh, health, busrefresh

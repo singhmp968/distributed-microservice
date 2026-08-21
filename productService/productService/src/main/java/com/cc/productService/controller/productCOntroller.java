@@ -34,18 +34,7 @@ public class productCOntroller {
 //        throw new RuntimeException("Simulated transient failure");
         System.out.println("testHeader:  " + testHeader);
 
-//        System.out.println("productService correlationId = " + cid);
-//        return "hurryyyyy";
-
-        // retyr check
-        counter++;
-        if(counter<=3)
-        {
-        throw new RuntimeException("Simulated transient failure");
-
-        }
-        return "success in 4th attempt";
-
+        return "Product details from product service";
     }
 
     @PutMapping("/update/{id}")
