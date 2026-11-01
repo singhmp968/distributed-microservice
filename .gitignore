@@ -1,0 +1,11 @@
+# Runtime log output
+logs/
+*.log
+
+# Build output
+target/
+
+# OS / IDE
+.DS_Store
+*.iml
+.idea/

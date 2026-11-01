@@ -2,11 +2,15 @@ package com.cc.orderService.controller;
 
 import com.cc.orderService.Client.ProductClient;
 import com.cc.orderService.Dto.Product;
+import com.cc.orderService.Entity.Order;
 import com.cc.orderService.bus.OrderMessageEvent;
+import com.cc.orderService.kafka.producer.OrderProducerService;
 import com.cc.orderService.properties.OrderProperities;
 import com.cc.orderService.service.OrderService;
 import com.cc.orderService.service.publisher.myRemoteEventPublisher;
 import com.netflix.discovery.converters.Auto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,11 +28,12 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
-
+import org.slf4j.MDC;
 
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
+    private static final Logger log = LoggerFactory.getLogger(OrderController.class);
     @Autowired
     @Qualifier("restClientImpl")
     RestClient restClient;
@@ -56,13 +61,38 @@ private int counter =0;
     private org.springframework.context.ApplicationEventPublisher publisher;
     @Autowired
     private org.springframework.cloud.bus.BusProperties busProperties;
-
+    @Autowired
+    private OrderProducerService orderProducerService;
 
 //    @GetMapping("/fetch")
 //    public String getOrders(){
 //        return "fetch from order andf messge" + message +" " + counter;
 //    }
+// kafaka testing
 
+    @PostMapping("/with-key")
+    public ResponseEntity<String> sProducerWithPayments(@RequestBody Order order) {
+        orderProducerService.sendWithKey(order);
+        return ResponseEntity.accepted().body("order is created and event is published");
+    }
+
+    // costome seraliazer
+    @GetMapping("/withOut-key")
+    public ResponseEntity<String> sProducerWithOutCustomSeralizerPayments(@RequestBody Order order) {
+        orderProducerService.sendWithOutKey(order);
+        return ResponseEntity.accepted().body("order is created and event is published");
+    }
+
+
+    @GetMapping("/payment")
+    public String sendPayments(@RequestParam String msg) {
+        MDC.put("payment_id", "PAY-123");
+        log.info("processing payment");        // CONSOLE_WITH_MDC line ends with: - PAY-123
+        MDC.remove("payment_id");
+        log.info("payment successful");
+        MDC.clear();
+        return "successfully fetched all payments";
+    }
 
     @GetMapping("/send-to-product")
     public String sendToProduct(@RequestParam String msg) {
@@ -79,6 +109,9 @@ private int counter =0;
 
     @GetMapping("/fetch")
     public String getOrders(){
+
+        log.info("Fetching orders");
+
         return "fetch from order andf messge" + orderProperities.getMessage() +" " + counter;
     }
 

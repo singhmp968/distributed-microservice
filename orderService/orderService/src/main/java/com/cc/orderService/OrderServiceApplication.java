@@ -7,8 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.bus.jackson.RemoteApplicationEventScan;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
+@EnableScheduling
 @EnableFeignClients
 @LoadBalancerClient(name = "product-service", configuration = LoadBalancerProductClientConfig.class)
 @RemoteApplicationEventScan(basePackageClasses = OrderMessageEvent.class)

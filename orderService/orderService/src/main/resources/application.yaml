@@ -18,7 +18,42 @@ spring:
     port: 5672
     username: guest
     password: guest
+  kafka:
+    bootstrap-servers: localhost:9092,localhost:9094
+    producer:
+      acks: all
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
+#      Record Accumulator
+      properities:
+        linger:
+          ms: 20
+        buffer:
+          memory: 33554432
+        max:
+          in:
+            flight:
+              requests:
+                per:
+                  connection: 5
+          block:
+            ms: 6000
+
+#            compression
+        compression:
+          type: snappy
+
+      retries: 3
+
+
+  # application.yaml
+  jobs:
+    report:
+      rate: 10000
+    cleanup:
+      cron: "0 0 2 * * *"      # 2 AM daily
 logging:
   level:
     com.cc.orderService: DEBUG
