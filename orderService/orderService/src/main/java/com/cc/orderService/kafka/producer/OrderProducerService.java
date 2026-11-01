@@ -44,4 +44,13 @@ public class OrderProducerService {
         });
     }
 
+    // one consumer and many topic
+
+    public void sendPayment(Order order) {
+        String key = order.getOrderId();
+        kafkaTemplate.send("payments-events", key, order);
+//        log.info("published to payments-events: {}", order.getOrderId());
+    }
+
+
 }

@@ -36,4 +36,15 @@ public class KafkaProducerConfig {
         DefaultKafkaProducerFactory<String, Order> factory = new DefaultKafkaProducerFactory<>(props);
         return new KafkaTemplate<>(factory);
     }
+
+    @Bean
+    public NewTopic payemntEventsTopic() {
+        return TopicBuilder.name("payments-events")
+                .partitions(3)
+                .replicas(1)                                          // was 2
+                .config(TopicConfig.RETENTION_MS_CONFIG, "604800000") // 7 days (also fixes the ~70-day typo)
+                .config(TopicConfig.CLEANUP_POLICY_CONFIG, "delete")
+                .build();                                             // dropped min.insync.replicas
+    }
+
 }

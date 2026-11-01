@@ -83,6 +83,11 @@ private int counter =0;
         return ResponseEntity.accepted().body("order is created and event is published");
     }
 
+    @PostMapping("/payment-event")
+    public ResponseEntity<String> publishPayment(@RequestBody Order order) {
+        orderProducerService.sendPayment(order);
+        return ResponseEntity.accepted().body("payment event published: " + order.getOrderId());
+    }
 
     @GetMapping("/payment")
     public String sendPayments(@RequestParam String msg) {

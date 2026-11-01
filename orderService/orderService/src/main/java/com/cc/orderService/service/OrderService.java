@@ -1,6 +1,7 @@
 package com.cc.orderService.service;
 
 import com.cc.orderService.Client.ProductClient;
+import com.cc.orderService.Entity.Order;
 import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
